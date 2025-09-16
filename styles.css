@@ -37,3 +37,22 @@
   color: #000;
   border: 1px solid #000;
 }
+
+.logo {
+    width: 40px;
+}
+
+.btn-signin, .btn-signup {
+    text-decoration: none;
+    padding: 5px;
+}
+
+.card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-signin:hover, .btn-signup:hover {
+    text-decoration: underline;
+    color: rgb(38, 23, 167);
+}

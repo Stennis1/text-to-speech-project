@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="./styles.css" rel="stylesheet">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
@@ -28,51 +28,194 @@
 
   <!-- Hero Section -->
   <section class="mb-3 text-center bg-light">
-    <div class="container py-4">
+    <div class="container py-3">
       <h1 class="fw-bold mt-4">Text To Speech Converter</h1>
       <p class="lead">Convert text to speech with ease. Explore below.</p>
     </div>
   </section>
 
   <!-- Body -->
-  <div class="container my-4 mb-5">
+  <div class="container mb-2">
     <div class="row g-4">
-      <!-- Card -->
-        <div class="card shadow-sm h-100 mx-auto" style="max-width: 800px;">
-          <div class="card-body">
-            <div class="mb-3">
-                <label for="text-area" class="mb-2 fw-bold">Input text to convert to speech</label>
-                <textarea class="form-control" id="text-area" rows="15" aria-label="Input text to convert to speech"></textarea>
+      <div class="card shadow-sm h-100 mx-auto" style="max-width: 800px;">
+        <div class="card-body">
+          <div class="mb-3">
+            <label for="text-area" class="mb-2 fw-bold">Input text to convert to speech</label>
+            <textarea class="form-control" id="text-area" rows="10" aria-label="Input text to convert to speech"></textarea>
+          </div>
+
+          <div class="row mb-3 g-2 align-items-center">
+            <div class="col-md-4">
+              <label for="voiceSelect" class="form-label fw-bold">Select Voice</label>
+              <select id="voiceSelect" class="form-select">
+                <optgroup label="English (US)">
+                  <option value="Joanna">Joanna (F)</option>
+                  <option value="Matthew">Matthew (M)</option>
+                  <option value="Ivy">Ivy (F)</option>
+                  <option value="Kendra">Kendra (F)</option>
+                  <option value="Salli">Salli (F)</option>
+                  <option value="Joey">Joey (M)</option>
+                </optgroup>
+                <optgroup label="English (British)">
+                  <option value="Amy">Amy (F)</option>
+                  <option value="Emma">Emma (F)</option>
+                  <option value="Brian">Brian (M)</option>
+                </optgroup>
+                <optgroup label="English (Australian)">
+                  <option value="Nicole">Nicole (F)</option>
+                  <option value="Russell">Russell (M)</option>
+                </optgroup>
+                <optgroup label="Spanish">
+                  <option value="Conchita">Conchita (ES, F)</option>
+                  <option value="Enrique">Enrique (ES, M)</option>
+                  <option value="Lucia">Lucia (ES, F)</option>
+                </optgroup>
+                <optgroup label="French">
+                  <option value="Celine">Celine (F)</option>
+                  <option value="Mathieu">Mathieu (M)</option>
+                </optgroup>
+                <optgroup label="German">
+                  <option value="Marlene">Marlene (F)</option>
+                  <option value="Hans">Hans (M)</option>
+                </optgroup>
+                <optgroup label="Italian">
+                  <option value="Carla">Carla (F)</option>
+                  <option value="Giorgio">Giorgio (M)</option>
+                </optgroup>
+                <optgroup label="Japanese">
+                  <option value="Mizuki">Mizuki (F)</option>
+                  <option value="Takumi">Takumi (M)</option>
+                </optgroup>
+                <optgroup label="Korean">
+                  <option value="Seoyeon">Seoyeon (F)</option>
+                </optgroup>
+                <optgroup label="Portuguese">
+                  <option value="Vitoria">Vitoria (F)</option>
+                  <option value="Ricardo">Ricardo (M)</option>
+                </optgroup>
+                <optgroup label="Hindi">
+                  <option value="Aditi">Aditi (F)</option>
+                  <option value="Raveena">Raveena (F)</option>
+                </optgroup>
+                <optgroup label="Chinese (Mandarin)">
+                  <option value="Zhiyu">Zhiyu (F)</option>
+                </optgroup>
+              </select>
             </div>
-            <div class="d-flex">
-              <div class="dropdown me-3">
-                <button class="btn btn-outline-black dropdown-toggle" type="button"
-                    id="dropdownMenuButton" data-bs-toggle="dropdown"  aria-expanded="false">
-                    Sophia (American English) - Female
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#">Amy (British English) - Female</a></li>
-                    <li><a class="dropdown-item" href="#">Mark (American English) - Male</a></li>
-                </ul>
-              </div>
-              <button class="btn btn-primary btn-sm">Convert to Speech</button>
+
+            <div class="col-md-4">
+              <label for="speedSelect" class="form-label fw-bold">Speech Rate</label>
+              <select id="speedSelect" class="form-select">
+                <option value="1.0">Normal</option>
+                <option value="0.8">Slow</option>
+                <option value="1.2">Fast</option>
+              </select>
+            </div>
+
+            <div class="col-md-4">
+              <label for="pitchSelect" class="form-label fw-bold">Pitch</label>
+              <select id="pitchSelect" class="form-select">
+                <option value="0%">Normal</option>
+                <option value="+10%">Higher</option>
+                <option value="-10%">Lower</option>
+              </select>
             </div>
           </div>
+
+          <div class="d-flex mb-3 align-items-center">
+            <button class="btn btn-primary btn-sm me-3" id="convertBtn">Convert to Speech</button>
+            <div id="loadingSpinner" class="spinner-border text-primary d-none" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
           <div class="d-flex justify-content-center mb-3">
-              <button class="btn btn-success text-center btn-sm">Download Audio</button>
+            <button class="btn btn-success text-center btn-sm" id="downloadBtn">Download Audio</button>
           </div>
+
+<div class="d-flex flex-column align-items-center mb-3">
+  <audio id="audioPlayer" controls class="w-100 mb-2"></audio>
+
+  <div class="d-flex align-items-center w-100">
+    <label for="volumeControl" class="me-2 fw-bold mb-0">Volume</label>
+    <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="0.5" class="form-range flex-grow-1 me-2">
+    <span id="volumeValue" class="fw-bold">50%</span>
+  </div>
+</div>
+
+<script>
+  const audioPlayer = document.getElementById("audioPlayer");
+  const volumeControl = document.getElementById("volumeControl");
+  const volumeValue = document.getElementById("volumeValue");
+
+  // Initial volume
+  audioPlayer.volume = volumeControl.value;
+
+  // Update volume on slider change
+  volumeControl.addEventListener("input", () => {
+    audioPlayer.volume = volumeControl.value;
+    volumeValue.textContent = Math.round(volumeControl.value * 100) + "%";
+  });
+</script>
+
         </div>
+      </div>
     </div>
   </div>
 
   <!-- Footer -->
-   <footer class="bg-dark text-white py-3 footer">
-        <div class="mt-4 container d-flex flex-column flex-md-row justify-content-between">
-            <p>&copy;Copyright - 2025</p>
-            <p>Generation Ghana | Azubi Africa</p>
-        </div>
-   </footer>
+  <footer class="bg-dark text-white py-3 footer mt-auto">
+    <div class="mt-4 container d-flex flex-column flex-md-row justify-content-between">
+      <p>&copy; Copyright - 2025</p>
+      <p>Generation Ghana | Azubi Africa</p>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const apiBase = "https://9z35yg9kdd.execute-api.eu-north-1.amazonaws.com/read-speech/tts"; 
+    let lastAudioBase64 = "";
+
+    document.getElementById("convertBtn").addEventListener("click", async () => {
+      const text = document.getElementById("text-area").value || "Hello from AWS Polly!";
+      const voice = document.getElementById("voiceSelect").value;
+      const rate = document.getElementById("speedSelect").value;
+      const pitch = document.getElementById("pitchSelect").value;
+
+      const loadingSpinner = document.getElementById("loadingSpinner");
+      loadingSpinner.classList.remove("d-none");
+
+      try {
+        const response = await fetch(apiBase + "/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, voice, rate, pitch })
+        });
+
+        const data = await response.json();
+        if (data.audio) {
+          lastAudioBase64 = data.audio;
+          const audioPlayer = document.getElementById("audioPlayer");
+          audioPlayer.src = "data:audio/mp3;base64," + data.audio;
+          audioPlayer.play();
+          document.getElementById("downloadBtn").disabled = false;
+        }
+      } catch (err) {
+        console.error("Error generating speech:", err);
+        alert("Error generating speech. Check console.");
+      } finally {
+        loadingSpinner.classList.add("d-none");
+      }
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+      if (!lastAudioBase64) return;
+      const link = document.createElement("a");
+      link.href = "data:audio/mp3;base64," + lastAudioBase64;
+      link.download = "tts_audio.mp3";
+      link.click();
+    });
+  </script>
 </body>
 </html>
